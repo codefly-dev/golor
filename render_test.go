@@ -1,7 +1,6 @@
 package render_test
 
 import (
-	"fmt"
 	render "github.com/hygge-io/color"
 	"testing"
 )
@@ -34,9 +33,38 @@ func TestScanner(t *testing.T) {
 			}
 		})
 	}
-	s := `This is a #red{part of text with #bold{some} in bold} word.
-Possible to #(blue,italic){combine}`
+}
 
-	renderer := render.New()
-	fmt.Println(renderer.Render(s))
+func TestNonDefaultScanner(t *testing.T) {
+	renderer := render.New().WithTagMarker('@').WithTextLimiter('[', ']')
+	scanner := renderer.Scanner()
+	tcs := []struct {
+		name string
+		text string
+		want []render.Token
+	}{
+		{name: "messy",
+			text: "this looks like a tag but is in blue and bold @(blue,bold)[#red{something}]",
+			want: []render.Token{
+				{Text: "this looks like a tag but is in blue and bold "},
+				{Text: "#red{something}", Style: render.NewStyle().Color(render.Blue).Typography(render.Bold)},
+			},
+		},
+	}
+	for _, tc := range tcs {
+		t.Run(tc.name, func(t *testing.T) {
+			got := scanner.Scan(tc.text)
+			if len(got) != len(tc.want) {
+				t.Errorf("got %d tokens, want %d", len(got), len(tc.want))
+			}
+			for i, g := range got {
+				if g.Text != tc.want[i].Text {
+					t.Errorf("Text not matching, got <%v>, want <%v>", g.Text, tc.want[i].Text)
+				}
+				if !render.SameStyle(g.Style, tc.want[i].Style) {
+					t.Errorf("Style not matching for token <%s>, got %v, want %v", g.Text, g.Style, tc.want[i].Style)
+				}
+			}
+		})
+	}
 }

@@ -28,6 +28,21 @@ func New() *Renderer {
 	}
 }
 
+func (renderer *Renderer) Scanner() *Scanner {
+	return renderer.scanner
+}
+
+func (renderer *Renderer) WithTagMarker(m int32) *Renderer {
+	renderer.scanner.TagMarker = m
+	return renderer
+}
+
+func (renderer *Renderer) WithTextLimiter(start, end int32) *Renderer {
+	renderer.scanner.Start = start
+	renderer.scanner.End = end
+	return renderer
+}
+
 type Scanner struct {
 	TagMarker int32
 	Start     int32
