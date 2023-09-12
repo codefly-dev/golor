@@ -26,6 +26,14 @@ Possible to #(green,italic){combine}`
 
 ![output](media/output.png)
 
-Note:
+Depending on the text you want to format, it can be necessary to change how the parsing is done:
 
-The code enables to change the triplet `# { }` to define tagging. Just need to expose it in the constructor.
+```go
+s := `In Markdown, @(bold)<a new paragraph> uses the # tag
+while links are written as @green<[link](url)>`
+
+renderer := render.New().WithTagMarker('@').WithTextLimiter('<', '>')
+fmt.Println(renderer.Render(s))
+```
+
+![output](media/custom.png)
