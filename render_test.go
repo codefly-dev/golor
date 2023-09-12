@@ -1,6 +1,7 @@
 package render_test
 
 import (
+	"fmt"
 	render "github.com/hygge-io/color"
 	"testing"
 )
@@ -33,4 +34,9 @@ func TestScanner(t *testing.T) {
 			}
 		})
 	}
+	s := `This is a #red{part of text with #bold{some} in bold} word.
+Possible to #(blue,italic){combine}`
+
+	renderer := render.New()
+	fmt.Println(renderer.Render(s))
 }

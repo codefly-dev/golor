@@ -47,9 +47,14 @@ type Type interface {
 }
 
 const (
-	Default = iota
+	Black = iota
 	Red
 	Green
+	Yellow
+	Blue
+	Magenta
+	Cyan
+	White
 )
 
 type Color struct {
@@ -137,26 +142,55 @@ func (style *Style) Typography(t int) *Style {
 	return style
 }
 
+var colorNames = map[string]int{
+	"black":   Black,
+	"red":     Red,
+	"green":   Green,
+	"yellow":  Yellow,
+	"blue":    Blue,
+	"magenta": Magenta,
+	"cyan":    Cyan,
+	"white":   White,
+}
+
 func (style *Style) AddOne(t string) {
 	switch t {
-	case "red":
-		style.Color(Red)
 	case "bold":
 		style.Typography(Bold)
 	case "italic":
 		style.Typography(Italic)
+	default:
+		if c, ok := colorNames[t]; ok {
+			style.Color(c)
+		}
 	}
 }
 
 type Theme struct {
+	// Could be interesting to have primary/secondary...and theme
+	// Dracula...
 }
 
 func (theme *Theme) Color(c Color) (color.Attribute, bool) {
 	switch c.value {
+	case Black:
+		return color.FgBlack, true
 	case Red:
 		return color.FgRed, true
+	case Green:
+		return color.FgGreen, true
+	case Yellow:
+		return color.FgYellow, true
+	case Blue:
+		return color.FgBlue, true
+	case Magenta:
+		return color.FgMagenta, true
+	case Cyan:
+		return color.FgCyan, true
+	case White:
+		return color.FgWhite, true
 	default:
-		return 0, false
+		return 0, false // Return false for unsupported color indices
 	}
 }
 

@@ -4,16 +4,22 @@ Turns github.com/fatih/color into HTML. Just kidding!
 ## Usage
 
 ```go
+package main
 
-import "github.com/hyggeio/color"
+import (
+	"fmt"
+
+	render "github.com/hygge-io/color"
+)
 
 func main() {
 
-s := `This is a #red{part of text with #bold{some} in bold} word.
-Possible to #(green,italic){combine}
-`
+	s := `This is a #red{part of text with #bold{some} in bold} word.
+Possible to #(green,italic){combine}`
 
-rendered := color.NewRender()
-fmt.Println(
-
+	renderer := render.New()
+	fmt.Println(renderer.Render(s))
 }
+```
+
+
