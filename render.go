@@ -21,7 +21,7 @@ func (renderer *Renderer) Render(text string) string {
 	return strings.Join(rendered, "")
 }
 
-func NewRenderer() *Renderer {
+func New() *Renderer {
 	return &Renderer{
 		theme:   Theme{},
 		scanner: NewScanner(),
