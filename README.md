@@ -1,6 +1,8 @@
 # color
 Turns github.com/fatih/color into HTML. Just kidding!
 
+Just a tag based approach to write some nice text.
+
 ## Usage
 
 ```go
@@ -22,4 +24,8 @@ Possible to #(green,italic){combine}`
 }
 ```
 
+![output](media/output.png)
 
+Note:
+
+The code enables to change the triplet `# { }` to define tagging. Just need to expose it in the constructor.
