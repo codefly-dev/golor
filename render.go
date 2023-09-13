@@ -5,6 +5,7 @@ import (
 	"github.com/fatih/color"
 	"regexp"
 	"strings"
+	"text/template"
 )
 
 type Renderer struct {
@@ -14,6 +15,15 @@ type Renderer struct {
 
 func (renderer *Renderer) Render(text string) string {
 	tokens := renderer.scanner.Scan(text)
+	var rendered []string
+	for _, token := range tokens {
+		rendered = append(rendered, renderer.theme.Convert(token))
+	}
+	return strings.Join(rendered, "")
+}
+
+func (renderer *Renderer) RenderWithTemplate(text string, obj any) string {
+	tokens := renderer.scanner.ScanWithTemplate(text, obj)
 	var rendered []string
 	for _, token := range tokens {
 		rendered = append(rendered, renderer.theme.Convert(token))
@@ -50,7 +60,7 @@ type Scanner struct {
 }
 
 func NewScanner() *Scanner {
-	return &Scanner{TagMarker: '#', Start: '{', End: '}'}
+	return &Scanner{TagMarker: '#', Start: '[', End: ']'}
 }
 
 type Token struct {
@@ -295,4 +305,17 @@ func (s *Scanner) Scan(text string) []Token {
 		tokens = append(tokens, Token{Text: currentText, Style: styles[level]})
 	}
 	return tokens
+}
+
+func (s *Scanner) ScanWithTemplate(text string, obj any) []Token {
+	tmpl, err := template.New("rendering").Parse(text)
+	if err != nil {
+		panic(fmt.Sprintf("cannot parse template: %s", err))
+	}
+	var b strings.Builder
+	err = tmpl.Execute(&b, obj)
+	if err != nil {
+		panic(fmt.Sprintf("cannot execute template: %s", err))
+	}
+	return s.Scan(b.String())
 }
