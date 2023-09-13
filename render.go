@@ -15,20 +15,12 @@ type Renderer struct {
 
 func (renderer *Renderer) Render(text string) string {
 	tokens := renderer.scanner.Scan(text)
-	var rendered []string
-	for _, token := range tokens {
-		rendered = append(rendered, renderer.theme.Convert(token))
-	}
-	return strings.Join(rendered, "")
+	return renderer.theme.Produce(tokens)
 }
 
 func (renderer *Renderer) RenderWithTemplate(text string, obj any) string {
 	tokens := renderer.scanner.ScanWithTemplate(text, obj)
-	var rendered []string
-	for _, token := range tokens {
-		rendered = append(rendered, renderer.theme.Convert(token))
-	}
-	return strings.Join(rendered, "")
+	return renderer.theme.Produce(tokens)
 }
 
 func New() *Renderer {
@@ -194,6 +186,14 @@ func (style *Style) AddOne(t string) {
 type Theme struct {
 	// Could be interesting to have primary/secondary...and theme
 	// Dracula...
+}
+
+func (theme *Theme) Produce(tokens []Token) string {
+	var rendered []string
+	for _, token := range tokens {
+		rendered = append(rendered, theme.Convert(token))
+	}
+	return strings.Join(rendered, "")
 }
 
 func (theme *Theme) Color(c Color) (color.Attribute, bool) {
