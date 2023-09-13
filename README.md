@@ -2,6 +2,7 @@
 
 ![workflow](https://github.com/hygge-io/color/actions/workflows/go.yaml/badge.svg) 
 [![Go Report Card](https://goreportcard.com/badge/github.com/hygge-io/color)](https://goreportcard.com/report/github.com/hygge-io/color)
+[![Go Reference](https://pkg.go.dev/badge/github.com/hygge-io/color.svg)](https://pkg.go.dev/github.com/hygge-io/color)
 
 Turns github.com/fatih/color into HTML. Just kidding!
 
