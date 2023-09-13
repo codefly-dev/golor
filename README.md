@@ -26,6 +26,20 @@ Possible to #(green,italic)[combine]`
 
 ![output](media/output.png)
 
+We can also use regular golang templating:
+
+```go
+s := `In Markdown, #(italic,red)[this the {{.Name}} of an object]`
+
+renderer := render.New()
+fmt.Println(renderer.RenderWithTemplate(s, map[string]string{"Name": "hygge"}))
+fmt.Println(renderer.RenderWithTemplate(s, struct{ Name string }{Name: "also hygge"}))
+}
+
+```
+
+![output](media/template.png)
+
 Depending on the text you want to format, it can be necessary to change how the parsing is done:
 
 ```go
