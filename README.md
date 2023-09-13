@@ -16,8 +16,8 @@ import (
 
 func main() {
 
-	s := `This is a #red{part of text with #bold{some} in bold} word.
-Possible to #(green,italic){combine}`
+	s := `This is a #red[part of text with #bold[some] in bold] word.
+Possible to #(green,italic)[combine]`
 
 	renderer := render.New()
 	fmt.Println(renderer.Render(s))
