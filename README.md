@@ -1,10 +1,12 @@
-# color
+# hygge/golor
 
 ![workflow](https://github.com/hygge-io/color/actions/workflows/go.yaml/badge.svg) 
 [![Go Report Card](https://goreportcard.com/badge/github.com/hygge-io/color)](https://goreportcard.com/report/github.com/hygge-io/color)
 [![Go Reference](https://pkg.go.dev/badge/github.com/hygge-io/color.svg)](https://pkg.go.dev/github.com/hygge-io/color)
 
 Turns github.com/fatih/color into HTML. Just kidding!
+
+It is just a very convenient way of dealing with colors in the terminal to get some fancy output.
 
 Just a tag based approach to write some nice text, supporting `text/template`.
 
@@ -16,6 +18,8 @@ Just a tag based approach to write some nice text, supporting `text/template`.
 golor.Println(`This is a #red[part of text with #bold[some] in bold] word.
 Possible to #(blue,italic)[combine]`)
 ```
+
+![simple](media/output.png)
 
 ### To more interesting
 
