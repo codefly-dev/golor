@@ -1,4 +1,4 @@
-package render
+package golor
 
 import (
 	"fmt"
@@ -8,18 +8,38 @@ import (
 	"text/template"
 )
 
+// Default Renderer helpers
+
+// Println prints the colorized text to fmt.Println
+func Println(text string, template ...any) {
+	fmt.Println(Sprintf(text, template...))
+}
+
+// Print prints the colored to fmt.Printf
+func Print(text string, template ...any) {
+	fmt.Print(Sprintf(text, template...))
+}
+
+func Sprintf(text string, template ...any) string {
+	render := New()
+	return render.Render(text, template...)
+}
+
 type Renderer struct {
 	theme   Theme
 	scanner *Scanner
 }
 
-func (renderer *Renderer) Render(text string) string {
-	tokens := renderer.scanner.Scan(text)
-	return renderer.theme.Produce(tokens)
-}
-
-func (renderer *Renderer) RenderWithTemplate(text string, obj any) string {
-	tokens := renderer.scanner.ScanWithTemplate(text, obj)
+func (renderer *Renderer) Render(text string, template ...any) string {
+	if len(template) > 1 {
+		panic("only one optional template allowed")
+	}
+	var tokens []Token
+	if len(template) == 0 {
+		tokens = renderer.scanner.Scan(text)
+	} else {
+		tokens = renderer.scanner.ScanWithTemplate(text, template[0])
+	}
 	return renderer.theme.Produce(tokens)
 }
 

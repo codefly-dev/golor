@@ -1,7 +1,7 @@
-package render_test
+package golor_test
 
 import (
-	render "github.com/hygge-io/color"
+	render "github.com/hygge-io/golor"
 	"testing"
 )
 

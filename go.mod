@@ -1,4 +1,4 @@
-module github.com/hygge-io/color
+module github.com/hygge-io/golor
 
 go 1.21
 

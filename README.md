@@ -6,44 +6,35 @@
 
 Turns github.com/fatih/color into HTML. Just kidding!
 
-Just a tag based approach to write some nice text.
+Just a tag based approach to write some nice text, supporting `text/template`.
 
 ## Usage
 
-```go
-package main
+### From simple
 
-import (
-	"fmt"
+```golang
+golor.Println(`This is a #red[part of text with #bold[some] in bold] word.
+Possible to #(blue,italic)[combine]`)
+```
 
-	render "github.com/hygge-io/color"
-)
+### To more interesting
 
-func main() {
-
-	s := `This is a #red[part of text with #bold[some] in bold] word.
-Possible to #(green,italic)[combine]`
-
-	renderer := render.New()
-	fmt.Println(renderer.Render(s))
+```golang
+	golor.Println(`#(blue)[Welcome to #(red)[hygge-io/golor]!]
+#(green,italic)[{{.FromTemplate}} in italic]
+#(cyan,bold)[<some brackets> in bold]
+{{- range .Items}}
+#(yellow,bold)[{{.}}]{{end}}
+Notice the #(white,bold,italic)[trick] to not have lines between the range items!`, map[string]any{
+		"FromTemplate": "Hello from template",
+		"Items":        []string{"Item 1", "Item 2"},
+	})
 }
 ```
 
-![output](media/output.png)
+![output](media/cool.png)
 
-We can also use regular golang templating:
-
-```go
-s := `In Markdown, #(italic,red)[this the {{.Name}} of an object]`
-
-renderer := render.New()
-fmt.Println(renderer.RenderWithTemplate(s, map[string]string{"Name": "hygge"}))
-fmt.Println(renderer.RenderWithTemplate(s, struct{ Name string }{Name: "also hygge"}))
-}
-
-```
-
-![output](media/template.png)
+## Changing the syntax for the style tags!
 
 Depending on the text you want to format, it can be necessary to change how the parsing is done:
 
@@ -51,7 +42,7 @@ Depending on the text you want to format, it can be necessary to change how the 
 s := `In Markdown, @(bold)<a new paragraph> uses the # tag
 while links are written as @green<[link](url)>`
 
-renderer := render.New().WithTagMarker('@').WithTextLimiter('<', '>')
+renderer := golor.New().WithTagMarker('@').WithTextLimiter('<', '>')
 fmt.Println(renderer.Render(s))
 ```
 
