@@ -6,6 +6,8 @@ import (
 )
 
 func main() {
+	golor.Println(`This is a #red[part of text with #bold[some] in bold] word`)
+	golor.Println(`This is a #(bold)[other text]`)
 
 	golor.Println(`This is a #red[part of text with #bold[some] in bold] word.
 Possible to #(blue,italic)[combine]`)

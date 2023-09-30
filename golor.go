@@ -3,6 +3,7 @@ package golor
 import (
 	"fmt"
 	"github.com/fatih/color"
+	"reflect"
 	"regexp"
 	"strings"
 	"text/template"
@@ -109,7 +110,7 @@ type Typography struct {
 }
 
 type Style struct {
-	color        Color
+	color        *Color
 	typographies []Typography
 }
 
@@ -145,7 +146,7 @@ func SameStyle(a, b *Style) bool {
 	if a == nil && b != nil {
 		return false
 	}
-	if a.color != b.color {
+	if !reflect.DeepEqual(a.color, b.color) {
 		return false
 	}
 	if len(a.typographies) != len(b.typographies) {
@@ -164,7 +165,7 @@ func SameStyle(a, b *Style) bool {
 }
 
 func (style *Style) Color(color int) *Style {
-	style.color = Color{value: color}
+	style.color = &Color{value: color}
 	return style
 }
 
@@ -216,7 +217,10 @@ func (theme *Theme) Produce(tokens []Token) string {
 	return strings.Join(rendered, "")
 }
 
-func (theme *Theme) Color(c Color) (color.Attribute, bool) {
+func (theme *Theme) Color(c *Color) (color.Attribute, bool) {
+	if c == nil {
+		return 0, false
+	}
 	switch c.value {
 	case Black:
 		return color.FgBlack, true
