@@ -66,6 +66,14 @@ func (renderer *Renderer) WithTextLimiter(start, end int32) *Renderer {
 	return renderer
 }
 
+func (renderer *Renderer) Println(s string) {
+	fmt.Println(renderer.Render(s))
+}
+
+func (renderer *Renderer) Sprint(s string) string {
+	return renderer.Render(s)
+}
+
 type Scanner struct {
 	TagMarker int32
 	Start     int32

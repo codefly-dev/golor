@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/hygge-io/golor"
 )
 
@@ -22,8 +21,8 @@ Notice the #(white,bold,italic)[trick] to not have lines between the range items
 		"Items":        []string{"Item 1", "Item 2"},
 	})
 
-	s := `In Markdown, @(bold)<a new paragraph> uses the # tag
+	s := `In Markdown, @bold<a new paragraph> uses the # tag
 while links are written as @green<[link](url)>`
 	renderer := golor.New().WithTagMarker('@').WithTextLimiter('<', '>')
-	fmt.Println(renderer.Render(s))
+	renderer.Println(s)
 }
