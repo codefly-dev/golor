@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/hygge-io/golor"
+	"github.com/codefly-dev/golor"
 )
 
 func main() {
@@ -11,7 +11,7 @@ func main() {
 	golor.Println(`This is a #red[part of text with #bold[some] in bold] word.
 Possible to #(blue,italic)[combine]`)
 
-	golor.Println(`#(blue)[Welcome to #(red)[hygge-io/golor]!]
+	golor.Println(`#(blue)[Welcome to #(red)[codefly-io/golor]!]
 #(green,italic)[{{.FromTemplate}} in italic]
 #(cyan,bold)[<some brackets> in bold]
 {{- range .Items}}

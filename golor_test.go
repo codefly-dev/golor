@@ -1,7 +1,7 @@
 package golor_test
 
 import (
-	render "github.com/hygge-io/golor"
+	render "github.com/codefly-dev/golor"
 	"testing"
 )
 
