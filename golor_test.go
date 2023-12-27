@@ -16,7 +16,9 @@ func TestScanner(t *testing.T) {
 		{name: "bold", text: "this #bold[cat is bold] and this is not", want: []render.Token{{Text: "this "}, {Text: "cat is bold", Style: render.NewStyle().Typography(render.Bold)}, {Text: " and this is not"}}},
 		{name: "simple", text: "this #red[cat is colorful] and this is not", want: []render.Token{{Text: "this "}, {Text: "cat is colorful", Style: render.NewStyle().Color(render.Red)}, {Text: " and this is not"}}},
 		{name: "two tags", text: "this #(red,bold)[cat is colorful and awesome] and this is not", want: []render.Token{{Text: "this "}, {Text: "cat is colorful and awesome", Style: render.NewStyle().Color(render.Red).Typography(render.Bold)}, {Text: " and this is not"}}},
+		{name: "two tags and a parenthesis", text: "this #(red,bold)[cat is (colorful) and awesome] and this is not", want: []render.Token{{Text: "this "}, {Text: "cat is (colorful) and awesome", Style: render.NewStyle().Color(render.Red).Typography(render.Bold)}, {Text: " and this is not"}}},
 		{name: "nested", text: "this #red[cat is #bold[awesome]]", want: []render.Token{{Text: "this "}, {Text: "cat is ", Style: render.NewStyle().Color(render.Red)}, {Text: "awesome", Style: render.NewStyle().Color(render.Red).Typography(render.Bold)}}},
+		{name: "nested with parentheses", text: "this #red[cat (is) #bold[(awesome)]]", want: []render.Token{{Text: "this "}, {Text: "cat (is) ", Style: render.NewStyle().Color(render.Red)}, {Text: "(awesome)", Style: render.NewStyle().Color(render.Red).Typography(render.Bold)}}},
 	}
 	for _, tc := range tcs {
 		t.Run(tc.name, func(t *testing.T) {

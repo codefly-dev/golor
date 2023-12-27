@@ -4,7 +4,7 @@ import (
 	"github.com/codefly-dev/golor"
 )
 
-func main() {
+func Manual() {
 	golor.Println(`This is a #red[part of text with #bold[some] in bold] word`)
 	golor.Println(`This is a #(bold)[other text]`)
 
@@ -25,4 +25,13 @@ Notice the #(white,bold,italic)[trick] to not have lines between the range items
 while links are written as @green<[link](url)>`
 	renderer := golor.New().WithTagMarker('@').WithTextLimiter('<', '>')
 	renderer.Println(s)
+}
+
+func Dracula() {
+	golor.UseTheme(golor.Dracula)
+}
+
+func main() {
+	// Manual()
+	Dracula()
 }
