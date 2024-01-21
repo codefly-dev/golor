@@ -4,6 +4,11 @@ import (
 	"github.com/codefly-dev/golor"
 )
 
+type display struct {
+	FromTemplate string
+	Items        []string
+}
+
 func Manual() {
 	golor.Println(`This is a #red[part of text with #bold[some] in bold] word`)
 	golor.Println(`This is a #(bold)[other text]`)
@@ -11,7 +16,18 @@ func Manual() {
 	golor.Println(`This is a #red[part of text with #bold[some] in bold] word.
 Possible to #(blue,italic)[combine]`)
 
-	golor.Println(`#(blue)[Welcome to #(red)[codefly-io/golor]!]
+	// Work with a type
+	golor.Printfln(`#(blue)[Welcome to #(red)[codefly-io/golor]!]
+#(green,italic)[{{.FromTemplate}} in italic]
+#(cyan,bold)[<some brackets> in bold]
+{{- range .Items}}
+#(yellow,bold)[{{.}}]{{end}}
+Notice the #(white,bold,italic)[trick] to not have lines between the range items!`, display{FromTemplate: "Hello from template",
+		Items: []string{"Item 1", "Item 2"},
+	})
+
+	// Or a Map
+	golor.Printfln(`#(blue)[Welcome to #(red)[codefly-io/golor]!]
 #(green,italic)[{{.FromTemplate}} in italic]
 #(cyan,bold)[<some brackets> in bold]
 {{- range .Items}}
@@ -27,11 +43,6 @@ while links are written as @green<[link](url)>`
 	renderer.Println(s)
 }
 
-func Dracula() {
-	golor.UseTheme(golor.Dracula)
-}
-
 func main() {
-	// Manual()
-	Dracula()
+	Manual()
 }

@@ -10,19 +10,34 @@ import (
 
 // Default Renderer helpers
 
-// Println prints the colorized text to fmt.Println
-func Println(text string, template ...any) {
-	fmt.Println(Sprintf(text, template...))
+// Printfln prints the colorized text to fmt.Println
+func Printfln(text string, template any) {
+	fmt.Println(Sprintf(text, template))
+}
+
+// Println prints the templatized colorized text to fmt.Println
+func Println(text string) {
+	fmt.Println(Sprint(text))
 }
 
 // Print prints the colored to fmt.Printf
-func Print(text string, template ...any) {
-	fmt.Print(Sprintf(text, template...))
+func Print(text string) {
+	fmt.Print(Sprint(text))
 }
 
-func Sprintf(text string, template ...any) string {
+// Printf prints the templatized colored to fmt.Printf
+func Printf(text string, template any) {
+	fmt.Print(Sprintf(text, template))
+}
+
+func Sprint(text string) string {
 	render := New()
-	return render.Render(text, template...)
+	return render.Render(text)
+}
+
+func Sprintf(text string, template any) string {
+	render := New()
+	return render.Renderf(text, template)
 }
 
 type Renderer struct {
@@ -30,16 +45,13 @@ type Renderer struct {
 	scanner *Scanner
 }
 
-func (renderer *Renderer) Render(text string, template ...any) string {
-	if len(template) > 1 {
-		panic("only one optional template allowed")
-	}
-	var tokens []Token
-	if len(template) == 0 {
-		tokens = renderer.scanner.Scan(text)
-	} else {
-		tokens = renderer.scanner.ScanWithTemplate(text, template[0])
-	}
+func (renderer *Renderer) Render(text string) string {
+	tokens := renderer.scanner.Scan(text)
+	return renderer.theme.Produce(tokens)
+}
+
+func (renderer *Renderer) Renderf(text string, template any) string {
+	tokens := renderer.scanner.ScanWithTemplate(text, template)
 	return renderer.theme.Produce(tokens)
 }
 
