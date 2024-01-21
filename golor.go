@@ -10,48 +10,29 @@ import (
 
 // Default Renderer helpers
 
-// Printfln prints the colorized text to fmt.Println
-func Printfln(text string, template any) {
-	fmt.Println(Sprintf(text, template))
+func Println(s string, args ...any) {
+	renderer := New()
+	txt := fmt.Sprintf(s, args...)
+	fmt.Println(renderer.Render(txt))
 }
 
-// Println prints the templatized colorized text to fmt.Println
-func Println(text string) {
-	fmt.Println(Sprint(text))
-}
-
-// Print prints the colored to fmt.Printf
-func Print(text string) {
-	fmt.Print(Sprint(text))
-}
-
-// Printf prints the templatized colored to fmt.Printf
-func Printf(text string, template any) {
-	fmt.Print(Sprintf(text, template))
-}
-
-func Sprint(text string) string {
-	render := New()
-	return render.Render(text)
-}
-
-func Sprintf(text string, template any) string {
-	render := New()
-	return render.Renderf(text, template)
+func Template(t any) *Renderer {
+	return New().WthTemplate(t)
 }
 
 type Renderer struct {
-	theme   Theme
-	scanner *Scanner
+	theme    Theme
+	scanner  *Scanner
+	template any
 }
 
 func (renderer *Renderer) Render(text string) string {
-	tokens := renderer.scanner.Scan(text)
-	return renderer.theme.Produce(tokens)
-}
-
-func (renderer *Renderer) Renderf(text string, template any) string {
-	tokens := renderer.scanner.ScanWithTemplate(text, template)
+	var tokens []Token
+	if renderer.template == nil {
+		tokens = renderer.scanner.Scan(text)
+	} else {
+		tokens = renderer.scanner.ScanWithTemplate(text, renderer.template)
+	}
 	return renderer.theme.Produce(tokens)
 }
 
@@ -60,6 +41,10 @@ func New() *Renderer {
 		theme:   Theme{},
 		scanner: NewScanner(),
 	}
+}
+
+func (renderer *Renderer) Println(s string, args ...any) {
+	fmt.Println(renderer.Render(fmt.Sprintf(s, args...)))
 }
 
 func (renderer *Renderer) Scanner() *Scanner {
@@ -77,12 +62,9 @@ func (renderer *Renderer) WithTextLimiter(start, end int32) *Renderer {
 	return renderer
 }
 
-func (renderer *Renderer) Println(s string) {
-	fmt.Println(renderer.Render(s))
-}
-
-func (renderer *Renderer) Sprint(s string) string {
-	return renderer.Render(s)
+func (renderer *Renderer) WthTemplate(t any) *Renderer {
+	renderer.template = t
+	return renderer
 }
 
 type Scanner struct {
