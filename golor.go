@@ -16,6 +16,12 @@ func Println(s string, args ...any) {
 	fmt.Println(renderer.Render(txt))
 }
 
+func Sprintf(s string, args ...any) string {
+	renderer := New()
+	txt := fmt.Sprintf(s, args...)
+	return renderer.Render(txt)
+}
+
 func Template(t any) *Renderer {
 	return New().WthTemplate(t)
 }
@@ -45,6 +51,10 @@ func New() *Renderer {
 
 func (renderer *Renderer) Println(s string, args ...any) {
 	fmt.Println(renderer.Render(fmt.Sprintf(s, args...)))
+}
+
+func (renderer *Renderer) Sprintf(s string, args ...any) string {
+	return renderer.Render(fmt.Sprintf(s, args...))
 }
 
 func (renderer *Renderer) Scanner() *Scanner {
