@@ -154,7 +154,7 @@ func SameStyle(a, b *Style) bool {
 	if a != nil && b == nil {
 		return false
 	}
-	if a == nil && b != nil {
+	if a == nil {
 		return false
 	}
 	if !reflect.DeepEqual(a.color, b.color) {
@@ -264,9 +264,6 @@ func (s *Scanner) Scan(text string) []Token {
 				currentText += string(char)
 			}
 		}
-	}
-	if level != 0 {
-		panic(fmt.Sprintf("invalid number of tags: %d", level))
 	}
 
 	// Add the last token
