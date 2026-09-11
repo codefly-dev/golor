@@ -1,0 +1,39 @@
+# Dependency updates for every ecosystem this repository ships.
+#
+# Each ecosystem is ONE catch-all group covering minor, patch and major, with
+# open-pull-requests-limit 1, so a week yields at most one pull request per
+# ecosystem instead of one per dependency. Dependabot cannot group across
+# ecosystems, so the number of entries below is the floor on weekly PRs.
+#
+# The github-actions entry exists because every action is pinned by commit SHA;
+# nothing else would ever move those pins.
+version: 2
+
+updates:
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 1
+    groups:
+      gomod:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+          - major
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 1
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+          - major
